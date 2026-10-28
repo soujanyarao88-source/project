@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Report local community problems and track their resolution.">
+  <title>CivicTrack | Community Issue Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="CivicTrack home"><span class="brand-mark">C</span><span>CivicTrack</span></a>
+    <nav aria-label="Main navigation">
+      <a href="#report">Report an issue</a>
+      <a href="#issues">Track issues</a>
+      <button id="admin-open" class="button button-outline" type="button">Admin login</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">YOUR COMMUNITY, YOUR VOICE</p>
+        <h1>Small reports.<br><span>Better neighbourhoods.</span></h1>
+        <p class="hero-description">Report local problems, follow their progress, and help make your community safer and cleaner.</p>
+        <a class="button button-light" href="#report">Report a problem <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-sun"></div><div class="art-building building-one"></div><div class="art-building building-two"></div>
+        <div class="art-road"></div><div class="art-tree tree-one"></div><div class="art-tree tree-two"></div>
+        <div class="art-pin"><span>✓</span></div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Issue summary">
+      <div class="stat-card"><span class="stat-icon">◎</span><div><strong id="stat-total">—</strong><span>Issues reported</span></div></div>
+      <div class="stat-card"><span class="stat-icon amber">◷</span><div><strong id="stat-progress">—</strong><span>In progress</span></div></div>
+      <div class="stat-card"><span class="stat-icon green">✓</span><div><strong id="stat-resolved">—</strong><span>Resolved</span></div></div>
+    </section>
+
+    <section class="content-grid">
+      <section class="panel report-panel" id="report">
+        <div class="section-heading"><div><p class="eyebrow">MAKE YOURSELF HEARD</p><h2>Report an issue</h2></div><span class="heading-icon">＋</span></div>
+        <p class="muted">Share a few details so the right people can understand the problem.</p>
+        <form id="issue-form">
+          <label for="title">Issue title <span class="required">*</span></label>
+          <input id="title" name="title" maxlength="100" required placeholder="e.g. Streetlight not working">
+          <div class="field-row">
+            <div><label for="category">Category <span class="required">*</span></label>
+              <select id="category" name="category" required>
+                <option value="">Choose category</option><option>Roads & potholes</option><option>Garbage & sanitation</option>
+                <option>Water supply</option><option>Streetlights</option><option>Drainage</option><option>Public safety</option><option>Other</option>
+              </select>
+            </div>
+            <div><label for="location">Location <span class="required">*</span></label><input id="location" name="location" maxlength="160" required placeholder="Street or area"></div>
+          </div>
+          <label for="description">Description <span class="required">*</span></label>
+          <textarea id="description" name="description" rows="4" maxlength="1500" required placeholder="Describe the problem and where it is happening..."></textarea>
+          <div class="field-row">
+            <div><label for="reporter">Your name (optional)</label><input id="reporter" name="reporter_name" maxlength="80" placeholder="Name"></div>
+            <div><label for="contact">Contact (optional)</label><input id="contact" name="contact" maxlength="100" placeholder="Email or phone"></div>
+          </div>
+          <p class="privacy-note">Please do not include passwords or other sensitive personal information.</p>
+          <button class="button button-primary full-width" type="submit" id="submit-issue">Submit report <span aria-hidden="true">→</span></button>
+          <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="panel issues-panel" id="issues">
+        <div class="section-heading issues-heading"><div><p class="eyebrow">COMMUNITY UPDATES</p><h2>Reported issues</h2></div><button class="icon-button" id="refresh-issues" aria-label="Refresh issues" title="Refresh">↻</button></div>
+        <div class="filters">
+          <label class="sr-only" for="search-issues">Search issues</label><input id="search-issues" placeholder="Search title or location…">
+          <label class="sr-only" for="filter-status">Filter by status</label><select id="filter-status"><option value="">All statuses</option><option>Pending</option><option>In Progress</option><option>Resolved</option></select>
+        </div>
+        <div id="issues-list" class="issues-list"><div class="loading-state">Loading community issues…</div></div>
+        <p id="issues-message" class="muted small" role="status"></p>
+      </section>
+    </section>
+    <section class="how-it-works">
+      <p class="eyebrow">SIMPLE AND TRANSPARENT</p><h2>How CivicTrack works</h2>
+      <div class="steps">
+        <article><span class="step-number">01</span><h3>Report it</h3><p>Tell the community what needs attention and where it is happening.</p></article>
+        <article><span class="step-number">02</span><h3>Track progress</h3><p>Check the public issue list for the latest status update.</p></article>
+        <article><span class="step-number">03</span><h3>Resolve together</h3><p>Authorized administrators update reports as work progresses.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="#"><span class="brand-mark">C</span><span>CivicTrack</span></a><p>Built for a more responsive community.</p><span>College project demonstration</span></footer>
+
+  <dialog id="admin-dialog" class="admin-dialog">
+    <div class="dialog-top"><div><p class="eyebrow">RESTRICTED AREA</p><h2>Administrator login</h2></div><button class="icon-button" id="admin-close" aria-label="Close dialog">×</button></div>
+    <p class="muted">Sign in to update issue statuses. Admin credentials are configured on the server.</p>
+    <form id="admin-login-form">
+      <label for="admin-password">Administrator password</label><input type="password" id="admin-password" autocomplete="current-password" required>
+      <button class="button button-primary full-width" type="submit" id="admin-login-submit">Sign in</button>
+      <p id="login-message" class="form-message" role="status"></p>
+    </form>
+    <div id="admin-tools" hidden>
+      <div class="admin-tools-heading"><h3>Manage issues</h3><button class="button button-outline" id="admin-logout" type="button">Log out</button></div>
+      <p class="muted small">Choose a status and save the update for an issue below.</p>
+      <div id="admin-issue-list" class="admin-issue-list"></div>
+    </div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
